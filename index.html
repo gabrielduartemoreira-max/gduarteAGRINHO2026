@@ -1,169 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Guardião do Milharal</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #87CEEB; /* Cor do céu */
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-        canvas {
-            border: 4px solid #5d4037;
-            background-color: #aed581;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            cursor: none;
-        }
-        .info {
-            text-align: center;
-            color: #2e7d32;
-        }
-    </style>
+    <title>Agrinho - Agro Forte, Futuro Sustentável</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="info">
-        <h1>O Guardião do Milharal</h1>
-        <p>Use as <b>Setas do Teclado</b> para mover o espantalho!</p>
-        <h2 id="scoreBoard">Pontos: 0</h2>
+    <div class="container">
+        <h1>🌱 Agro Forte, Futuro Sustentável 🌎</h1>
+
+        <div class="hud">
+            <p>Pontos: <span id="score">0</span></p>
+            <p>Tempo: <span id="time">30</span>s</p>
+        </div>
+
+        <div id="game-area"></div>
+
+        <button id="start-btn">Iniciar Jogo</button>
+
+        <div class="instructions">
+            <h2>Como Jogar</h2>
+            <p>
+                Clique apenas nos itens sustentáveis 🌱 para ganhar pontos.
+                Evite os itens poluentes 🛢️.
+            </p>
+        </div>
     </div>
 
-    <canvas id="gameCanvas" width="600" height="400"></canvas>
-
-    <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-        const scoreBoard = document.getElementById("scoreBoard");
-
-        let score = 0;
-        let gameActive = true;
-
-        // Configurações do Espantalho
-        const scarecrow = {
-            x: canvas.width / 2 - 25,
-            y: canvas.height - 100,
-            width: 50,
-            height: 80,
-            speed: 7
-        };
-
-        // Teclas pressionadas
-        const keys = {};
-
-        // Inimigos (Pássaros)
-        const birds = [];
-        const birdSpeed = 2;
-
-        function drawScarecrow() {
-            // Poste de madeira
-            ctx.fillStyle = "#5d4037";
-            ctx.fillRect(scarecrow.x + 22, scarecrow.y + 20, 6, 60);
-            ctx.fillRect(scarecrow.x + 5, scarecrow.y + 30, 40, 6);
-
-            // Roupa (Camisa)
-            ctx.fillStyle = "#ef5350";
-            ctx.fillRect(scarecrow.x + 10, scarecrow.y + 20, 30, 35);
-
-            // Cabeça (Saco)
-            ctx.fillStyle = "#d7ccc8";
-            ctx.beginPath();
-            ctx.arc(scarecrow.x + 25, scarecrow.y + 15, 12, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Chapéu
-            ctx.fillStyle = "#fbc02d";
-            ctx.fillRect(scarecrow.x + 10, scarecrow.y, 30, 5);
-            ctx.fillRect(scarecrow.x + 15, scarecrow.y - 10, 20, 10);
-        }
-
-        function drawCornField() {
-            // Desenha fileiras de milho ao fundo
-            ctx.fillStyle = "#2e7d32";
-            for (let i = 0; i < canvas.width; i += 20) {
-                ctx.beginPath();
-                ctx.moveTo(i, canvas.height);
-                ctx.lineTo(i + 10, canvas.height - 40);
-                ctx.lineTo(i + 20, canvas.height);
-                ctx.fill();
-                
-                // Pontinhos amarelos (milho)
-                ctx.fillStyle = "#ffd600";
-                ctx.fillRect(i + 8, canvas.height - 30, 4, 8);
-                ctx.fillStyle = "#2e7d32";
-            }
-        }
-
-        function spawnBird() {
-            if (Math.random() < 0.02) {
-                birds.push({
-                    x: Math.random() * (canvas.width - 20),
-                    y: -20,
-                    size: 15
-                });
-            }
-        }
-
-        function drawBirds() {
-            ctx.fillStyle = "#000";
-            birds.forEach((bird, index) => {
-                bird.y += birdSpeed;
-
-                // Desenha o pássaro (forma de V)
-                ctx.beginPath();
-                ctx.moveTo(bird.x, bird.y);
-                ctx.lineTo(bird.x - 10, bird.y - 5);
-                ctx.moveTo(bird.x, bird.y);
-                ctx.lineTo(bird.x + 10, bird.y - 5);
-                ctx.stroke();
-
-                // Colisão com o espantalho
-                if (bird.y > scarecrow.y && 
-                    bird.x > scarecrow.x && 
-                    bird.x < scarecrow.x + scarecrow.width) {
-                    birds.splice(index, 1);
-                    score++;
-                    scoreBoard.innerText = "Pontos: " + score;
-                }
-
-                // Perdeu se o pássaro chegar no chão
-                if (bird.y > canvas.height) {
-                    gameActive = false;
-                    alert("O pássaro comeu o milho! Pontuação Final: " + score);
-                    document.location.reload();
-                }
-            });
-        }
-
-        function update() {
-            if (!gameActive) return;
-
-            // Movimento
-            if (keys["ArrowLeft"] && scarecrow.x > 0) scarecrow.x -= scarecrow.speed;
-            if (keys["ArrowRight"] && scarecrow.x < canvas.width - scarecrow.width) scarecrow.x += scarecrow.speed;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawCornField();
-            drawScarecrow();
-            spawnBird();
-            drawBirds();
-
-            requestAnimationFrame(update);
-        }
-
-        window.addEventListener("keydown", (e) => keys[e.code] = true);
-        window.addEventListener("keyup", (e) => keys[e.code] = false);
-
-        update();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
