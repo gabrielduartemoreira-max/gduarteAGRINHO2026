@@ -54,3 +54,24 @@ h1 {
     transition: transform 0.2s;
 }
 
+.item:hover {
+    transform: scale(1.2);
+}
+
+#start-btn {
+    padding: 10px 20px;
+    border: none;
+    background: #2d8f3d;
+    color: white;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#start-btn:hover {
+    background: #256f31;
+}
+
+.instructions {
+    margin-top: 20px;
+}
