@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agrinho - Agro Forte, Futuro Sustentável</title>
+    <title>Quiz Agro Forte - Kahoot Style</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>🌱 Agro Forte, Futuro Sustentável 🌎</h1>
-
-        <div class="hud">
-            <p>Pontos: <span id="score">0</span></p>
-            <p>Tempo: <span id="time">30</span>s</p>
+    <div class="quiz-container" id="quiz-box">
+        <div class="header-zone">
+            <h1>Agro Forte Quiz</h1>
+            <div class="logo-placeholder">🚜🌾</div>
         </div>
 
-        <div id="game-area"></div>
+        <div id="game-screen">
+            <div class="top-bar">
+                <div class="progress" id="progress">Pergunta 1 de 10</div>
+                <div class="score-display">Pontos: <span id="current-score">0</span></div>
+            </div>
+            
+            <div class="question-box">
+                <div class="question" id="question">Carregando pergunta...</div>
+            </div>
 
-        <button id="start-btn">Iniciar Jogo</button>
+            <div class="options-grid" id="options-container">
+                </div>
 
-        <div class="instructions">
-            <h2>Como Jogar</h2>
-            <p>
-                Clique apenas nos itens sustentáveis 🌱 para ganhar pontos.
-                Evite os itens poluentes 🛢️.
-            </p>
+            <div class="feedback-zone" id="feedback-zone">
+                <div class="feedback" id="feedback"></div>
+                <button class="btn-next" id="btn-next" onclick="nextQuestion()">Avançar →</button>
+            </div>
+        </div>
+        
+        <div id="result-screen" style="display: none;">
+            <h2>Fim do Jogo!</h2>
+            <div class="trophy">🏆</div>
+            <p class="score-board">Você acertou <span id="final-score">0</span> de 10 perguntas!</p>
+            <p class="performance-msg" id="performance-msg"></p>
+            <button class="btn-restart" onclick="restartGame()">Jogar Novamente 🔄</button>
         </div>
     </div>
 
