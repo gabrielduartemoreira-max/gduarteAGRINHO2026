@@ -1,77 +1,269 @@
+:root {
+    --primary-bg: #46178f;
+    --card-bg: #ffffff;
+    --text-main: #333333;
+    --text-muted: #666666;
+    
+    /* Cores clássicas dos botões do Kahoot */
+    --color-red: #e21b3c;
+    --color-blue: #1368ce;
+    --color-yellow: #d89e00;
+    --color-green: #26890c;
+    
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #87ceeb, #dfffd6);
+    background-color: var(--primary-bg);
+    background-image: radial-gradient(circle at 20% 30%, #521bac 0%, #3a1375 100%);
+    color: var(--text-main);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
-    color: #2d572c;
+    padding: 20px;
 }
 
-.container {
-    text-align: center;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 700px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+.quiz-container {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 35px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-zone {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #f2f2f2;
+    padding-bottom: 15px;
 }
 
 h1 {
-    margin-bottom: 15px;
+    color: var(--primary-bg);
+    font-size: 2rem;
+    font-weight: 800;
 }
 
-.hud {
+.logo-placeholder {
+    font-size: 2rem;
+}
+
+.top-bar {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-#game-area {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    background: #b8f5b1;
-    border: 3px solid #2d572c;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
+.progress {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: #f0f0f0;
+    padding: 6px 16px;
+    border-radius: 50px;
 }
 
-.item {
-    position: absolute;
-    font-size: 2.5rem;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s;
+.score-display {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-bg);
+    background: #eee8f7;
+    padding: 6px 16px;
+    border-radius: 50px;
 }
 
-.item:hover {
-    transform: scale(1.2);
+.question-box {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#start-btn {
-    padding: 10px 20px;
+.question {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #111;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 650px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+    h1 { font-size: 1.5rem; }
+    .question { font-size: 1.3rem; }
+}
+
+.btn-option {
     border: none;
-    background: #2d8f3d;
+    border-radius: 12px;
+    padding: 24px 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: white;
-    font-size: 1rem;
-    border-radius: 10px;
     cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s, box-shadow 0.1s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.18);
+    position: relative;
 }
 
-#start-btn:hover {
-    background: #256f31;
+.btn-option:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 rgba(0,0,0,0.18);
 }
 
-.instructions {
-    margin-top: 20px;
+.btn-option:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Formas geométricas simulando a experiência visual do Kahoot */
+.btn-option::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+    background-color: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.opt-0 { background-color: var(--color-red); }
+.opt-0::before { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); } /* Triângulo */
+
+.opt-1 { background-color: var(--color-blue); }
+.opt-1::before { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); } /* Losango */
+
+.opt-2 { background-color: var(--color-yellow); }
+.opt-2::before { border-radius: 50%; } /* Círculo */
+
+.opt-3 { background-color: var(--color-green); }
+.opt-3::before { clip-path: inset(0 0 0 0); } /* Quadrado */
+
+/* Feedback dinâmico de acerto e erro */
+.btn-option.correct-answer {
+    opacity: 1 !important;
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(38, 137, 12, 0.6);
+    border: 3px solid #fff;
+}
+
+.btn-option.wrong-answer {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.feedback-zone {
+    margin-top: 30px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.feedback {
+    font-size: 1.4rem;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.correct-text { color: var(--color-green); }
+.wrong-text { color: var(--color-red); }
+
+.btn-next, .btn-restart {
+    background-color: var(--primary-bg);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #2d0e5e;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-next:hover, .btn-restart:hover { background-color: #521bac; }
+
+.btn-next:active, .btn-restart:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #2d0e5e;
+}
+
+.btn-next { display: none; }
+
+/* Tela de Resultados Final */
+#result-screen {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#result-screen h2 {
+    font-size: 2.5rem;
+    color: var(--primary-bg);
+    margin-bottom: 15px;
+}
+
+.trophy {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+.score-board {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+#final-score {
+    color: var(--color-green);
+    font-size: 2.2rem;
+}
+
+.performance-msg {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
